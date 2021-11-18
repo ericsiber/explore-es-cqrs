@@ -5,18 +5,18 @@ import java.util.List;
 
 public class ProjectionProfessionnelsSanteNonActive {
 
-    private static List<String> identifiants = new ArrayList<>();
+    private static List<CompteIdentifier> identifiants = new ArrayList<>();
 
-    private static void ajouterProfessionnel(String id) {
+    private static void ajouterProfessionnel(CompteIdentifier id) {
         identifiants.add(id);
     }
 
-    private static void retirerProfessionnel(String id) {
+    private static void retirerProfessionnel(CompteIdentifier id) {
         identifiants.remove(id);
     }
 
 
-    public static void initialiserIdentifiantsProfessionnelsSante(List<String> identifiants) {
+    public static void initialiserIdentifiantsProfessionnelsSante(List<CompteIdentifier> identifiants) {
         identifiants = new ArrayList<>(identifiants);
     }
 
@@ -30,14 +30,14 @@ public class ProjectionProfessionnelsSanteNonActive {
     }
 
     private static void consommer(ProfessionnelSanteReference professionnelSanteReference) {
-        ajouterProfessionnel(professionnelSanteReference.identifiant);
+        ajouterProfessionnel(professionnelSanteReference.getIdentifiant());
     }
 
     private static void consommer(ProfessionnelSanteActive professionnelSanteActive) {
-        retirerProfessionnel(professionnelSanteActive.identifiant);
+        retirerProfessionnel(professionnelSanteActive.getIdentifiant());
     }
 
-    public static List<String> getIdentifiantsProfessionnelsSante() {
+    public static List<CompteIdentifier> getIdentifiantsProfessionnelsSante() {
         return identifiants;
     }
 

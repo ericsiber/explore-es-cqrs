@@ -4,23 +4,23 @@ import java.util.List;
 
 public class CompteAnnuaire {
 
-    private String identifiant;
+    private CompteIdentifier identifiant;
     private DecisionProjection decision;
 
-    public CompteAnnuaire(String identifiant) {
+    public CompteAnnuaire(CompteIdentifier identifiant) {
         this.identifiant = identifiant;
     }
 
     public static ProfessionnelSanteReference traiter(ReferencerProfessionnelSante referencerProfessionnelSante) {
-         return new ProfessionnelSanteReference(referencerProfessionnelSante.identifiant);
+         return new ProfessionnelSanteReference(referencerProfessionnelSante.getIdentifiant());
     }
 
     public static CompteAnnuaire of(ProfessionnelSanteReference professionnelSanteReference) {
-        return new CompteAnnuaire(professionnelSanteReference.identifiant);
+        return new CompteAnnuaire(professionnelSanteReference.getIdentifiant());
     }
 
     public static CompteAnnuaire of(List<EvenementProfessionnelSante> evenements) {
-        CompteAnnuaire compte = new CompteAnnuaire("");
+        CompteAnnuaire compte = new CompteAnnuaire(null);
         for (EvenementProfessionnelSante evenement : evenements) {
             compte = compte.enrichir(evenement);
         }
@@ -62,7 +62,7 @@ public class CompteAnnuaire {
         return null;
     }
 
-    public String getIdentifiant() {
+    public CompteIdentifier getIdentifiant() {
         return identifiant;
     }
 

@@ -10,35 +10,37 @@ public class CompteAnnuaireTest {
     @Test
     void referencerProfessionnelSante_doit_produire_professionnelSante() {
         //Given
-        ReferencerProfessionnelSante referencerProfessionnelSante = new ReferencerProfessionnelSante("ID12");
+        CompteIdentifier identifiant = CompteIdentifier.of("ID12");
+        ReferencerProfessionnelSante referencerProfessionnelSante = new ReferencerProfessionnelSante(identifiant);
 
         // When
         ProfessionnelSanteReference professionelSanteReference = CompteAnnuaire.traiter(referencerProfessionnelSante);
 
         // Then
-        Assertions.assertEquals(professionelSanteReference.identifiant, "ID12");
+        Assertions.assertEquals(professionelSanteReference.getIdentifiant(), identifiant);
     }
 
     @Test
     void activerProfessionnelSante_doit_produire_professionnelSanteActive() {
         // Given
+        CompteIdentifier identifiant = CompteIdentifier.of("ID013");
         CompteAnnuaire compte = CompteAnnuaire.of(
-                buildProfessionnelSanteReference("ID013")
+                buildProfessionnelSanteReference(identifiant)
         );
 
-        ActiverProfessionnelSante activerProfessionnelSante = new ActiverProfessionnelSante("ID13");
+        ActiverProfessionnelSante activerProfessionnelSante = new ActiverProfessionnelSante(identifiant);
 
         // When
         ProfessionnelSanteActive professionnelSanteActive = compte.traiter(activerProfessionnelSante);
 
         // Then
-        Assertions.assertEquals(professionnelSanteActive.identifiant, "ID13");
+        Assertions.assertEquals(professionnelSanteActive.getIdentifiant(), identifiant);
     }
 
     @Test
     void desactiverProfessionnelSante_doit_produire_professionnelSanteDesactive() {
         // Given
-        String identifiant = "ID14";
+        CompteIdentifier identifiant = CompteIdentifier.of("ID14");
         var evenements = List.of(
                 buildProfessionnelSanteReference(identifiant),
                 buildProfessionnelSanteActive(identifiant)
@@ -51,13 +53,13 @@ public class CompteAnnuaireTest {
         ProfessionnelSanteDesactive professionnelSanteDesactive = compte.traiter(desactiverProfessionnelSante);
 
         // Then
-        Assertions.assertEquals(professionnelSanteDesactive.identifiant, identifiant);
+        Assertions.assertEquals(professionnelSanteDesactive.getIdentifiant(), identifiant);
     }
 
     @Test
     void desactiverProfessionnelSante_desactive_ne_doit_rien_produire() {
         // Given
-        String identifiant = "ID14";
+        CompteIdentifier identifiant = CompteIdentifier.of("ID14");
         var evenements = List.of(
                 buildProfessionnelSanteReference(identifiant),
                 buildProfessionnelSanteActive(identifiant),
@@ -74,15 +76,15 @@ public class CompteAnnuaireTest {
         Assertions.assertNull(evenement);
     }
 
-    private ProfessionnelSanteReference buildProfessionnelSanteReference(String identifiant) {
+    private ProfessionnelSanteReference buildProfessionnelSanteReference(CompteIdentifier identifiant) {
         return new ProfessionnelSanteReference(identifiant);
     }
 
-    private EvenementProfessionnelSante buildProfessionnelSanteActive(String identifiant) {
+    private EvenementProfessionnelSante buildProfessionnelSanteActive(CompteIdentifier identifiant) {
         return new ProfessionnelSanteActive(identifiant);
     }
 
-    private EvenementProfessionnelSante buildProfessionnelSanteDesactive(String identifiant) {
+    private EvenementProfessionnelSante buildProfessionnelSanteDesactive(CompteIdentifier identifiant) {
         return new ProfessionnelSanteDesactive(identifiant);
     }
 }

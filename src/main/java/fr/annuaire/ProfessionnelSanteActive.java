@@ -2,9 +2,13 @@ package fr.annuaire;
 
 public class ProfessionnelSanteActive implements  EvenementProfessionnelSante {
 
-    public String identifiant;
+    private CompteIdentifier identifiant;
 
-    public ProfessionnelSanteActive(String identifiant) {
+    public ProfessionnelSanteActive(CompteIdentifier identifiant) {
         this.identifiant = identifiant;
+    }
+
+    public CompteIdentifier getIdentifiant() {
+        return identifiant;
     }
 }

@@ -1,13 +1,13 @@
 package fr.annuaire;
 
 public class ActiverProfessionnelSante {
-    private final String identifiant;
+    private final CompteIdentifier identifiant;
 
-    public ActiverProfessionnelSante(String identifiant) {
+    public ActiverProfessionnelSante(CompteIdentifier identifiant) {
         this.identifiant = identifiant;
     }
 
-    public String getIdentifiant() {
+    public CompteIdentifier getIdentifiant() {
         return identifiant;
     }
 }

@@ -1,9 +1,13 @@
 package fr.annuaire;
 
-public class ProfessionnelSanteReference implements  EvenementProfessionnelSante {
-    public String identifiant;
+public class ProfessionnelSanteReference implements EvenementProfessionnelSante {
+    private CompteIdentifier identifiant;
 
-    public ProfessionnelSanteReference(String identifiant) {
+    public ProfessionnelSanteReference(CompteIdentifier identifiant) {
         this.identifiant = identifiant;
+    }
+
+    public CompteIdentifier getIdentifiant() {
+        return identifiant;
     }
 }
