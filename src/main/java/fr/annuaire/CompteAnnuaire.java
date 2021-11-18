@@ -9,47 +9,40 @@ public class CompteAnnuaire {
 
     public CompteAnnuaire(CompteIdentifier identifiant) {
         this.identifiant = identifiant;
+        this.decision = new DecisionProjection();
     }
 
-    public static ProfessionnelSanteReference traiter(ReferencerProfessionnelSante referencerProfessionnelSante) {
+    public CompteAnnuaire(CompteIdentifier identifiant, List<EvenementProfessionnelSante> historique) {
+        this(identifiant);
+        historique.forEach(this::consommer);
+    }
+
+    private void consommer(EvenementProfessionnelSante evenementProfessionnelSante) {
+        if (evenementProfessionnelSante.getClass() == ProfessionnelSanteReference.class) {
+            consommer((ProfessionnelSanteReference) evenementProfessionnelSante);
+        }
+        if (evenementProfessionnelSante.getClass() == ProfessionnelSanteActive.class) {
+            consommer((ProfessionnelSanteActive) evenementProfessionnelSante);
+        }
+        if (evenementProfessionnelSante.getClass() == ProfessionnelSanteDesactive.class) {
+            consommer((ProfessionnelSanteDesactive) evenementProfessionnelSante);
+        }
+    }
+
+    private void consommer(ProfessionnelSanteReference evenementProfessionnelSante) {
+        // nothing
+    }
+
+    private void consommer(ProfessionnelSanteDesactive evenementProfessionnelSante) {
+        this.decision.setEtatCompte(EtatCompte.INACTIF);
+    }
+
+    private void consommer(ProfessionnelSanteActive evenementProfessionnelSante) {
+        this.decision.setEtatCompte(EtatCompte.ACTIF);
+    }
+
+    public ProfessionnelSanteReference traiter(ReferencerProfessionnelSante referencerProfessionnelSante) {
          return new ProfessionnelSanteReference(referencerProfessionnelSante.getIdentifiant());
-    }
-
-    public static CompteAnnuaire of(ProfessionnelSanteReference professionnelSanteReference) {
-        return new CompteAnnuaire(professionnelSanteReference.getIdentifiant());
-    }
-
-    public static CompteAnnuaire of(List<EvenementProfessionnelSante> evenements) {
-        CompteAnnuaire compte = new CompteAnnuaire(null);
-        for (EvenementProfessionnelSante evenement : evenements) {
-            compte = compte.enrichir(evenement);
-        }
-        return compte;
-    }
-
-    private CompteAnnuaire enrichir(EvenementProfessionnelSante evenementProfessionnelSante) {
-       if (evenementProfessionnelSante.getClass() == ProfessionnelSanteReference.class) {
-           return of((ProfessionnelSanteReference) evenementProfessionnelSante);
-        }
-       if (evenementProfessionnelSante.getClass() == ProfessionnelSanteActive.class) {
-           return of(this, (ProfessionnelSanteActive) evenementProfessionnelSante);
-       }
-       if (evenementProfessionnelSante.getClass() == ProfessionnelSanteDesactive.class) {
-           return of(this, (ProfessionnelSanteDesactive) evenementProfessionnelSante);
-       }
-       return this;
-    }
-
-    private static CompteAnnuaire of(CompteAnnuaire compteExistant, ProfessionnelSanteActive professionnelSanteActive) {
-        CompteAnnuaire compte = new CompteAnnuaire(compteExistant.getIdentifiant());
-        compte.setDecision(new DecisionProjection(EtatCompte.ACTIF));
-        return compte;
-    }
-
-    private static CompteAnnuaire of(CompteAnnuaire compteExistant, ProfessionnelSanteDesactive professionnelSanteDesactive) {
-        CompteAnnuaire compte = new CompteAnnuaire(compteExistant.getIdentifiant());
-        compte.setDecision(new DecisionProjection(EtatCompte.INACTIF));
-        return compte;
     }
 
     public ProfessionnelSanteActive traiter(ActiverProfessionnelSante activerProfessionnelSante) {
@@ -61,14 +54,5 @@ public class CompteAnnuaire {
             return new ProfessionnelSanteDesactive(desactiverProfessionnelSante.getIdentifiant());
         return null;
     }
-
-    public CompteIdentifier getIdentifiant() {
-        return identifiant;
-    }
-
-    private void setDecision(DecisionProjection decision) {
-        this.decision = decision;
-    }
-
 
 }

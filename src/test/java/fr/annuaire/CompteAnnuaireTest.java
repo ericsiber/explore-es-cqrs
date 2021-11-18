@@ -12,9 +12,10 @@ public class CompteAnnuaireTest {
         //Given
         CompteIdentifier identifiant = CompteIdentifier.of("ID12");
         ReferencerProfessionnelSante referencerProfessionnelSante = new ReferencerProfessionnelSante(identifiant);
+        CompteAnnuaire compte = new CompteAnnuaire(identifiant);
 
         // When
-        ProfessionnelSanteReference professionelSanteReference = CompteAnnuaire.traiter(referencerProfessionnelSante);
+        ProfessionnelSanteReference professionelSanteReference = compte.traiter(referencerProfessionnelSante);
 
         // Then
         Assertions.assertEquals(professionelSanteReference.getIdentifiant(), identifiant);
@@ -24,9 +25,7 @@ public class CompteAnnuaireTest {
     void activerProfessionnelSante_doit_produire_professionnelSanteActive() {
         // Given
         CompteIdentifier identifiant = CompteIdentifier.of("ID013");
-        CompteAnnuaire compte = CompteAnnuaire.of(
-                buildProfessionnelSanteReference(identifiant)
-        );
+        CompteAnnuaire compte = new CompteAnnuaire(identifiant, List.of(buildProfessionnelSanteReference(identifiant)));
 
         ActiverProfessionnelSante activerProfessionnelSante = new ActiverProfessionnelSante(identifiant);
 
@@ -41,11 +40,11 @@ public class CompteAnnuaireTest {
     void desactiverProfessionnelSante_doit_produire_professionnelSanteDesactive() {
         // Given
         CompteIdentifier identifiant = CompteIdentifier.of("ID14");
-        var evenements = List.of(
+        var historique = List.of(
                 buildProfessionnelSanteReference(identifiant),
                 buildProfessionnelSanteActive(identifiant)
         );
-        CompteAnnuaire compte = CompteAnnuaire.of(evenements);
+        CompteAnnuaire compte = new CompteAnnuaire(identifiant, historique);
 
         DesactiverProfessionnelSante desactiverProfessionnelSante = new DesactiverProfessionnelSante(identifiant);
 
@@ -60,12 +59,12 @@ public class CompteAnnuaireTest {
     void desactiverProfessionnelSante_desactive_ne_doit_rien_produire() {
         // Given
         CompteIdentifier identifiant = CompteIdentifier.of("ID14");
-        var evenements = List.of(
+        var historique = List.of(
                 buildProfessionnelSanteReference(identifiant),
                 buildProfessionnelSanteActive(identifiant),
                 buildProfessionnelSanteDesactive(identifiant)
         );
-        CompteAnnuaire compte = CompteAnnuaire.of(evenements);
+        CompteAnnuaire compte = new CompteAnnuaire(identifiant, historique);
 
         DesactiverProfessionnelSante desactiverProfessionnelSante = new DesactiverProfessionnelSante(identifiant);
 
