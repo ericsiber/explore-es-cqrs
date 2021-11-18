@@ -41,18 +41,18 @@ public class CompteAnnuaire {
         this.decision.setEtatCompte(EtatCompte.ACTIF);
     }
 
-    public ProfessionnelSanteReference traiter(ReferencerProfessionnelSante referencerProfessionnelSante) {
-         return new ProfessionnelSanteReference(referencerProfessionnelSante.getIdentifiant());
+    public List<EvenementProfessionnelSante> traiter(ReferencerProfessionnelSante referencerProfessionnelSante) {
+         return List.of(new ProfessionnelSanteReference(referencerProfessionnelSante.getIdentifiant()));
     }
 
-    public ProfessionnelSanteActive traiter(ActiverProfessionnelSante activerProfessionnelSante) {
-        return new ProfessionnelSanteActive(activerProfessionnelSante.getIdentifiant());
+    public List<EvenementProfessionnelSante> traiter(ActiverProfessionnelSante activerProfessionnelSante) {
+        return List.of(new ProfessionnelSanteActive(activerProfessionnelSante.getIdentifiant()));
     }
 
-    public ProfessionnelSanteDesactive traiter(DesactiverProfessionnelSante desactiverProfessionnelSante) {
+    public List<EvenementProfessionnelSante> traiter(DesactiverProfessionnelSante desactiverProfessionnelSante) {
         if (this.decision.getEtatCompte() == EtatCompte.ACTIF)
-            return new ProfessionnelSanteDesactive(desactiverProfessionnelSante.getIdentifiant());
-        return null;
+            return List.of(new ProfessionnelSanteDesactive(desactiverProfessionnelSante.getIdentifiant()));
+        return List.of();
     }
 
 }

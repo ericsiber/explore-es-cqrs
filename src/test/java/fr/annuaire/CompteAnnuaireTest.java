@@ -5,20 +5,24 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class CompteAnnuaireTest {
 
     @Test
-    void referencerProfessionnelSante_doit_produire_professionnelSante() {
+    void referencerProfessionnelSante_doit_produire_professionnelSanteReference() {
         //Given
         CompteIdentifier identifiant = CompteIdentifier.of("ID12");
         ReferencerProfessionnelSante referencerProfessionnelSante = new ReferencerProfessionnelSante(identifiant);
         CompteAnnuaire compte = new CompteAnnuaire(identifiant);
 
         // When
-        ProfessionnelSanteReference professionelSanteReference = compte.traiter(referencerProfessionnelSante);
+        var evenements = compte.traiter(referencerProfessionnelSante);
 
         // Then
-        Assertions.assertEquals(professionelSanteReference.getIdentifiant(), identifiant);
+        assertThat(evenements).containsExactly(
+          new ProfessionnelSanteReference(identifiant)
+        );
     }
 
     @Test
@@ -30,10 +34,12 @@ public class CompteAnnuaireTest {
         ActiverProfessionnelSante activerProfessionnelSante = new ActiverProfessionnelSante(identifiant);
 
         // When
-        ProfessionnelSanteActive professionnelSanteActive = compte.traiter(activerProfessionnelSante);
+        var evenements = compte.traiter(activerProfessionnelSante);
 
         // Then
-        Assertions.assertEquals(professionnelSanteActive.getIdentifiant(), identifiant);
+        assertThat(evenements).containsExactly(
+                new ProfessionnelSanteActive(identifiant)
+        );
     }
 
     @Test
@@ -49,10 +55,12 @@ public class CompteAnnuaireTest {
         DesactiverProfessionnelSante desactiverProfessionnelSante = new DesactiverProfessionnelSante(identifiant);
 
         // When
-        ProfessionnelSanteDesactive professionnelSanteDesactive = compte.traiter(desactiverProfessionnelSante);
+        var evenements = compte.traiter(desactiverProfessionnelSante);
 
         // Then
-        Assertions.assertEquals(professionnelSanteDesactive.getIdentifiant(), identifiant);
+        assertThat(evenements).containsExactly(
+                new ProfessionnelSanteDesactive(identifiant)
+        );
     }
 
     @Test
@@ -69,10 +77,10 @@ public class CompteAnnuaireTest {
         DesactiverProfessionnelSante desactiverProfessionnelSante = new DesactiverProfessionnelSante(identifiant);
 
         // When
-        var evenement = compte.traiter(desactiverProfessionnelSante);
+        var evenements = compte.traiter(desactiverProfessionnelSante);
 
         // Then
-        Assertions.assertNull(evenement);
+        assertThat(evenements).isEmpty();
     }
 
     private ProfessionnelSanteReference buildProfessionnelSanteReference(CompteIdentifier identifiant) {
