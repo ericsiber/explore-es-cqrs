@@ -18,14 +18,12 @@ public class CompteAnnuaire {
     }
 
     private void consommer(EvenementProfessionnelSante evenementProfessionnelSante) {
-        if (evenementProfessionnelSante.getClass() == ProfessionnelSanteReference.class) {
-            consommer((ProfessionnelSanteReference) evenementProfessionnelSante);
-        }
-        if (evenementProfessionnelSante.getClass() == ProfessionnelSanteActive.class) {
-            consommer((ProfessionnelSanteActive) evenementProfessionnelSante);
-        }
-        if (evenementProfessionnelSante.getClass() == ProfessionnelSanteDesactive.class) {
-            consommer((ProfessionnelSanteDesactive) evenementProfessionnelSante);
+        switch (evenementProfessionnelSante) {
+            case ProfessionnelSanteReference event -> consommer(event);
+            case ProfessionnelSanteActive event -> consommer(event);
+            case ProfessionnelSanteDesactive event -> consommer(event);
+            default -> {
+            }
         }
     }
 
@@ -42,16 +40,16 @@ public class CompteAnnuaire {
     }
 
     public List<EvenementProfessionnelSante> traiter(ReferencerProfessionnelSante referencerProfessionnelSante) {
-         return List.of(new ProfessionnelSanteReference(referencerProfessionnelSante.getIdentifiant()));
+         return List.of(new ProfessionnelSanteReference(referencerProfessionnelSante.identifiant()));
     }
 
     public List<EvenementProfessionnelSante> traiter(ActiverProfessionnelSante activerProfessionnelSante) {
-        return List.of(new ProfessionnelSanteActive(activerProfessionnelSante.getIdentifiant()));
+        return List.of(new ProfessionnelSanteActive(activerProfessionnelSante.identifiant()));
     }
 
     public List<EvenementProfessionnelSante> traiter(DesactiverProfessionnelSante desactiverProfessionnelSante) {
         if (this.decision.getEtatCompte() == EtatCompte.ACTIF)
-            return List.of(new ProfessionnelSanteDesactive(desactiverProfessionnelSante.getIdentifiant()));
+            return List.of(new ProfessionnelSanteDesactive(desactiverProfessionnelSante.identifiant()));
         return List.of();
     }
 

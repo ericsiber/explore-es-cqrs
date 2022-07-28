@@ -1,6 +1,5 @@
 package fr.annuaire;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,7 +11,7 @@ public class CompteAnnuaireTest {
     @Test
     void referencerProfessionnelSante_doit_produire_professionnelSanteReference() {
         //Given
-        CompteIdentifier identifiant = CompteIdentifier.of("ID12");
+        CompteIdentifier identifiant = new CompteIdentifier("ID12");
         ReferencerProfessionnelSante referencerProfessionnelSante = new ReferencerProfessionnelSante(identifiant);
         CompteAnnuaire compte = new CompteAnnuaire(identifiant);
 
@@ -28,7 +27,7 @@ public class CompteAnnuaireTest {
     @Test
     void activerProfessionnelSante_doit_produire_professionnelSanteActive() {
         // Given
-        CompteIdentifier identifiant = CompteIdentifier.of("ID013");
+        CompteIdentifier identifiant = new CompteIdentifier("ID013");
         CompteAnnuaire compte = new CompteAnnuaire(identifiant, List.of(buildProfessionnelSanteReference(identifiant)));
 
         ActiverProfessionnelSante activerProfessionnelSante = new ActiverProfessionnelSante(identifiant);
@@ -45,7 +44,7 @@ public class CompteAnnuaireTest {
     @Test
     void desactiverProfessionnelSante_doit_produire_professionnelSanteDesactive() {
         // Given
-        CompteIdentifier identifiant = CompteIdentifier.of("ID14");
+        CompteIdentifier identifiant = new CompteIdentifier("ID14");
         var historique = List.of(
                 buildProfessionnelSanteReference(identifiant),
                 buildProfessionnelSanteActive(identifiant)
@@ -66,7 +65,7 @@ public class CompteAnnuaireTest {
     @Test
     void desactiverProfessionnelSante_desactive_ne_doit_rien_produire() {
         // Given
-        CompteIdentifier identifiant = CompteIdentifier.of("ID14");
+        CompteIdentifier identifiant = new CompteIdentifier("ID14");
         var historique = List.of(
                 buildProfessionnelSanteReference(identifiant),
                 buildProfessionnelSanteActive(identifiant),

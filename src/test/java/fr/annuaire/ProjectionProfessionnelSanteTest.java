@@ -11,9 +11,9 @@ public class ProjectionProfessionnelSanteTest {
     @Test
     void professionnelDeSanteReference_doit_ajouter_id_dans_listeProfessionnelsSanteNonActives() {
         // Given
-        CompteIdentifier id = CompteIdentifier.of("ID15");
+        CompteIdentifier id = new CompteIdentifier("ID15");
         ProjectionProfessionnelsSanteNonActive.initialiserIdentifiantsProfessionnelsSante(
-                List.of(CompteIdentifier.of("ID00"))
+                List.of(new CompteIdentifier("ID00"))
         );
 
         // When
@@ -26,7 +26,7 @@ public class ProjectionProfessionnelSanteTest {
     @Test
     void professionnelDeSanteActive_doit_retirer_id_de_listeProfessionnelsSanteNonActives() {
         // Given
-        CompteIdentifier id = CompteIdentifier.of("ID20");
+        CompteIdentifier id = new CompteIdentifier("ID20");
         ProjectionProfessionnelsSanteNonActive.initialiserIdentifiantsProfessionnelsSante(List.of(id));
 
         // When
